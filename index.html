@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two Futures, One Planet</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main>
+  <nav class="top"><a href="index.html">Interactive prototype</a><a href="exploration.html">Exploratory graphs</a></nav>
+  <header>
+    <h1>Two Futures, One Planet: How Our Emissions Choices Shape 2100</h1>
+    <p class="question">How does the projected temperature gap between a low-emissions and a high-emissions future change over the century?</p>
+    <p class="data-note">CMIP6 · CESM2-WACCM r1i1p1f1 · near-surface air temperature (<code>tas</code>), annual means in °C ·
+      SSP1-2.6 vs SSP5-8.5, 2015–2100 · <span id="region-note">California box land cells (32.5–42°N, 124.5–114°W)</span> · cos(latitude) area weights · baseline 1995–2014 (historical run).</p>
+  </header>
+
+  <section class="card">
+    <h2>Pick a window, compare the futures <span class="status">(prototype, checkpoint build)</span></h2>
+    <div class="controls">
+      <div class="group"><span class="group-label">Window:</span>
+        <button class="chip" data-a="2021" data-b="2040">Near term 2021–2040</button>
+        <button class="chip" data-a="2041" data-b="2060">Mid-century 2041–2060</button>
+        <button class="chip" data-a="2081" data-b="2100">End of century 2081–2100</button>
+        <button class="chip" data-a="2015" data-b="2100">Whole run 2015–2100</button>
+      </div>
+      <div class="group"><span class="group-label">Region:</span>
+        <button class="chip" data-region="ca" aria-pressed="true">California box</button>
+        <button class="chip" data-region="glob" aria-pressed="false">Global</button>
+      </div>
+    </div>
+    <p class="window-label">Selected window: <span id="win-label">—</span></p>
+    <div class="readout" aria-live="polite">
+      <div class="tile"><div class="k"><i class="dot" style="width:9px;height:9px;border-radius:50%;background:var(--low);display:inline-block"></i>SSP1-2.6 window mean</div><div class="v" id="v-low">—</div><div class="s" id="s-low"></div></div>
+      <div class="tile"><div class="k"><i class="dot" style="width:9px;height:9px;border-radius:50%;background:var(--high);display:inline-block"></i>SSP5-8.5 window mean</div><div class="v" id="v-high">—</div><div class="s" id="s-high"></div></div>
+      <div class="tile"><div class="k">Gap (SSP5-8.5 − SSP1-2.6)</div><div class="v" id="v-gap">—</div><div class="s" id="s-gap"></div></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--low)"></i>SSP1-2.6 annual</span><span><i style="background:var(--high)"></i>SSP5-8.5 annual</span><span><i style="background:var(--text-primary)"></i>thick segments = window means; bracket = gap</span></div>
+    <div class="chart" id="proto"></div>
+    <p class="status">Drag across the chart to choose any window (snaps to whole years, minimum 5 years). Hover for single-year values.</p>
+  </section>
+
+  <section class="card">
+    <h2>Status at the checkpoint</h2>
+    <p class="finding"><strong>Working now:</strong> brush-to-select time window, preset windows, California/global toggle, readouts that update together (both scenario means, the gap, change vs 1995–2014), and hover details.</p>
+    <p class="finding"><strong>Planned for the final version:</strong> narrative annotations, a short write-up (design rationale and development process), visual polish and a mobile layout pass. Adding more CMIP6 models to show model spread is a stretch goal.</p>
+  </section>
+  <footer>D3.js v7 · data: <code>data/tas_scenarios_annual.csv</code> · see <a href="exploration.html">exploratory graphs</a>.</footer>
+</main>
+<script src="lib/d3.v7.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/prototype.js"></script>
+</body>
+</html>

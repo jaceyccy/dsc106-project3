@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exploratory Graphs — Two Futures, One Planet</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main>
+  <nav class="top"><a href="index.html">Interactive prototype</a><a href="exploration.html">Exploratory graphs</a></nav>
+  <header>
+    <h1>Two Futures, One Planet: How Our Emissions Choices Shape 2100</h1>
+    <p class="question">How does the projected temperature gap between a low-emissions and a high-emissions future change over the century?</p>
+    <p class="data-note">Data: CMIP6 (Google Cloud public archive), model CESM2-WACCM, member r1i1p1f1, native grid (0.94° × 1.25°).
+      Variable: monthly near-surface air temperature (<code>tas</code>), converted K → °C and averaged to calendar years (days-in-month weights).
+      Region: California bounding box 32.5–42°N, 124.5–114°W, land cells only (land fraction ≥ 50 %, 64 of 88 grid cells), cos(latitude) area-weighted.
+      The box also covers most of Nevada and slivers of Oregon, Arizona and Baja California. Scenarios: historical (1950–2014), SSP1-2.6 and SSP5-8.5 (2015–2100). One model run — not a multi-model ensemble.</p>
+  </header>
+
+  <section class="card" id="card1">
+    <h2>1 · Annual temperature trajectories, 1950–2100</h2>
+    <p class="subtitle">California box, annual mean °C. Gray: historical run; shaded: 1995–2014 baseline (mean 14.74 °C).</p>
+    <div class="legend"><span><i style="background:var(--hist)"></i>Historical</span><span><i style="background:var(--low)"></i>SSP1-2.6 (low emissions)</span><span><i style="background:var(--high)"></i>SSP5-8.5 (high emissions)</span></div>
+    <div class="chart" id="g1"></div>
+    <p class="finding"><strong>What we learned:</strong> The two futures are hard to tell apart until mid-century, then split. SSP1-2.6 levels off near 16.3 °C (about +0.08 °C per decade), while SSP5-8.5 keeps climbing (about +0.70 °C per decade) to 21.1 °C in 2100. This pointed us to the <em>gap</em> between scenarios, not either line alone.</p>
+  </section>
+
+  <section class="card" id="card2">
+    <h2>2 · Annual gap: SSP5-8.5 minus SSP1-2.6</h2>
+    <p class="subtitle">California box, °C, one bar per year 2015–2100. Orange = high-emissions year warmer; blue = low-emissions year warmer.</p>
+    <div class="chart" id="g2"></div>
+    <p class="finding"><strong>What we learned:</strong> The single-year gap is noisy. It is negative in 21 of 86 years (the last in 2059), then stays positive, reaching +5.26 °C in 2095. So year-by-year comparisons can mislead, and we needed a time-window view.</p>
+  </section>
+
+  <section class="card" id="card3">
+    <h2>3 · Distribution of annual temperatures in a common window</h2>
+    <p class="subtitle">California box, °C. Each dot is one year: 2081–2100 under each scenario, compared with the 1995–2014 baseline from the historical run.</p>
+    <div class="legend"><span><i class="dot" style="background:var(--hist)"></i>Historical 1995–2014</span><span><i class="dot" style="background:var(--low)"></i>SSP1-2.6</span><span><i class="dot" style="background:var(--high)"></i>SSP5-8.5</span><span><i style="background:var(--text-primary)"></i>window mean</span></div>
+    <div class="chart" id="g3"></div>
+    <p class="finding"><strong>What we learned:</strong> By 2081–2100 the two scenarios don't overlap at all. SSP1-2.6's warmest year (17.07 °C) is still cooler than SSP5-8.5's coolest year (18.84 °C). SSP1-2.6 ends up only about 1.5 °C above the baseline, against about 5.5 °C for SSP5-8.5. Averaging over a window gives a clear contrast that single years hide.</p>
+  </section>
+
+  <section class="card" id="card4">
+    <h2>4 · Year-to-year variation vs the smoothed trend</h2>
+    <p class="subtitle">California box, °C, 2015–2100. Faint dots: individual years; lines: centered 11-year running mean (not shown for the first and last 5 years).</p>
+    <div class="legend"><span><i class="dot" style="background:var(--low)"></i>SSP1-2.6</span><span><i class="dot" style="background:var(--high)"></i>SSP5-8.5</span></div>
+    <div class="chart" id="g4"></div>
+    <p class="finding"><strong>What we learned:</strong> Natural variability around the 11-year trend is about 0.5–0.6 °C (SD). The smoothed gap passes +1 °C only in 2053 and +3 °C in 2079. Before mid-century the emissions signal is smaller than ordinary year-to-year swings, so our interaction should average over a viewer-chosen window, not show single years.</p>
+  </section>
+
+  <section class="card" id="card5">
+    <h2>5 · Average scenario gap by 20-year window: California box vs global</h2>
+    <p class="subtitle">Mean of annual gaps (SSP5-8.5 minus SSP1-2.6, °C) in each window. Same model run. Global = cos(latitude)-weighted mean over all grid cells.</p>
+    <div class="legend"><span><i class="sq" style="background:var(--reg-ca)"></i>California box (land)</span><span><i class="sq" style="background:var(--reg-glob)"></i>Global mean</span></div>
+    <div class="chart" id="g5"></div>
+    <p class="finding"><strong>What we learned:</strong> The gap doesn't grow at a steady rate. In California it goes from +0.24 °C (2021–2040) to +0.56 °C (2041–2060), +2.26 °C (2061–2080) and +3.92 °C (2081–2100), ending larger than the global gap (+3.28 °C). So the answer to our question depends on <em>which window</em> you pick, and that became our interaction: viewers choose the window.</p>
+  </section>
+
+  <footer>Built with D3.js v7 from <code>data/tas_scenarios_annual.csv</code> and <code>data/tas_historical_annual.csv</code> (exported by <code>notebooks/project3_cmip6_exploration.ipynb</code>). DSC 106 Project 3 checkpoint.</footer>
+</main>
+<script src="lib/d3.v7.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/exploration.js"></script>
+</body>
+</html>
