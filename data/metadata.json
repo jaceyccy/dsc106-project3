@@ -1,0 +1,27 @@
+{
+  "model": "CESM2-WACCM",
+  "member": "r1i1p1f1",
+  "grid": "gn",
+  "scope": "california_box",
+  "region_box": {
+    "lat_min": 32.5,
+    "lat_max": 42.0,
+    "lon_min": -124.5,
+    "lon_max": -114.0
+  },
+  "land_threshold": "sftlf >= 50%",
+  "land_cells_used": 64,
+  "box_cells_total": 88,
+  "variable": "tas (near-surface air temperature), monthly Amon, converted K -> degC",
+  "annual": "calendar-year mean weighted by days in month",
+  "spatial": "cos(latitude) area weights",
+  "baseline": "historical 1995-2014 mean",
+  "baseline_reg_c": 14.744,
+  "baseline_glob_c": 14.74,
+  "stores": {
+    "historical": "gs://cmip6/CMIP6/CMIP/NCAR/CESM2-WACCM/historical/r1i1p1f1/Amon/tas/gn/v20190227/",
+    "ssp585": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2-WACCM/ssp585/r1i1p1f1/Amon/tas/gn/v20200702/",
+    "ssp126": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2-WACCM/ssp126/r1i1p1f1/Amon/tas/gn/v20210211/",
+    "sftlf": "gs://cmip6/CMIP6/ScenarioMIP/NCAR/CESM2-WACCM/ssp534-over/r5i1p1f1/fx/sftlf/gn/v20200305/"
+  }
+}
