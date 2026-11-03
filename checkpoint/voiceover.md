@@ -1,4 +1,4 @@
-# Checkpoint voiceover — target 110 s (~275 spoken words at ~150 wpm)
+# Checkpoint voiceover
 
 Replace the `[TEAM NAME]` and `[MEMBER …]` placeholders. Record at 1280×800 or larger, with the browser zoomed to 90–100 %.
 Pages: `index.html` (prototype) and `exploration.html` (graphs 1–5).
@@ -14,10 +14,9 @@ For each graph, say the **title first**, then **the question it answers**, then 
 | 0:48–1:00 | Graph 4: point to its title, then trace the smoothed lines | "Graph four: Year-to-year variation versus the smoothed trend. Question: how much is natural noise and how much is trend? The swings are about half a degree, as big as the emissions signal until about 2050. So we average over windows." |
 | 1:00–1:12 | Graph 5: point to its title, then hover the green bars left to right | "Graph five: Average scenario gap by twenty-year window, California versus global. Question: how does the average gap change across the century? It grows from a quarter degree to almost four, and California ends up ahead of the global gap." |
 | 1:12–1:19 | Switch to `index.html`, title in view | "So our title is 'Two Futures, One Planet,' and our question: how does the gap between these futures change over the century?" |
-| 1:19–1:43 | Click **Near term 2021–2040** (gap +0.24 °C), click **End of century 2081–2100** (+3.92 °C), drag across about 2061–2080 (+2.26 °C), click **Global** (+1.83 °C) | "Here's our working prototype. Pick a window with a preset or by dragging, and both averages and the gap update together. You can also switch to global." |
-| 1:43–1:50 | Scroll to the "Status at the checkpoint" card | "Still to come: annotations, our design write-up, and polish. More models is a stretch goal. Thanks!" |
+| 1:43–1:50 | Scroll to the "Status at the checkpoint" card | "We will need to work on the interactive visualization, annotations, our design write-up, and polish. Thanks!" |
 
-**Completed (shown live):** data pipeline and verified CSV, five exploratory graphs, brush and preset window selection, region toggle, linked readouts, hover tooltips.
-**Planned (said as future work):** annotations, write-up, visual polish; multi-model spread is a stretch goal.
+**Completed (shown):** data pipeline and verified CSV, five exploratory graphs, title and question.
+**Planned (said as future work):** interactive visualization, annotations, design write-up, polish.
 
 If you're running long, drop "1950 to 2100" from Graph 1's title line and "California versus global" from Graph 5's.
