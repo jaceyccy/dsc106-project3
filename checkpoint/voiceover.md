@@ -14,7 +14,7 @@ For each graph, say the **title first**, then **the question it answers**, then 
 | 0:48–1:00 | Graph 4: point to its title, then trace the smoothed lines | "Graph four: Year-to-year variation versus the smoothed trend. Question: how much is natural noise and how much is trend? The swings are about half a degree, as big as the emissions signal until about 2050. So we average over windows." |
 | 1:00–1:12 | Graph 5: point to its title, then hover the green bars left to right | "Graph five: Average scenario gap by twenty-year window, California versus global. Question: how does the average gap change across the century? It grows from a quarter degree to almost four, and California ends up ahead of the global gap." |
 | 1:12–1:19 | Switch to `index.html`, title in view | "So our title is 'Two Futures, One Planet,' and our question: how does the gap between these futures change over the century?" |
-| 1:43–1:50 | Scroll to the "Status at the checkpoint" card | "We will need to work on the interactive visualization, annotations, our design write-up, and polish. Thanks!" |
+| 1:43–1:50 | Scroll to the "Status at the checkpoint" card | "We have the skeleton finished for the interactive part, will need to work on the interactive visualization, annotations, our design write-up, and polish. Thanks!" |
 
 **Completed (shown):** data pipeline and verified CSV, five exploratory graphs, title and question.
 **Planned (said as future work):** interactive visualization, annotations, design write-up, polish.
