@@ -25,6 +25,37 @@
   const lblHigh = g.append("text").attr("class", "label").attr("dy", "0.35em");
   const lblGap = g.append("text").attr("class", "label").style("font-weight", 600).attr("dy", "0.35em");
 
+  // Annotation: first year after which the 11-year smoothed gap stays above +1 °C
+  const annoG = g.append("g").style("pointer-events", "none");
+  const annoLine = annoG.append("line").attr("y1", 0).attr("y2", h)
+    .style("stroke", "var(--text-secondary)").style("stroke-dasharray", "4 3");
+  const annoText = annoG.append("text").attr("class", "label").attr("y", 12);
+  const annoText2 = annoG.append("text").attr("class", "label muted").attr("y", 27);
+
+  function emergenceYear() {
+    const sm = rolling(proj.map(d => d[col("gap_c")]));
+    let lastBelow = null;
+    proj.forEach((d, i) => { if (sm[i] !== null && sm[i] < 1) lastBelow = d.year; });
+    return lastBelow === null ? null : lastBelow + 1;
+  }
+  function noiseSD() {
+    const out = [];
+    ["ssp126_c", "ssp585_c"].forEach(k => {
+      const v = proj.map(d => d[col(k)]), sm = rolling(v);
+      v.forEach((x0, i) => { if (sm[i] !== null) out.push(x0 - sm[i]); });
+    });
+    return d3.deviation(out);
+  }
+  let EMERGE = null, NOISE = null;
+  function drawAnnotation() {
+    EMERGE = emergenceYear(); NOISE = noiseSD();
+    if (EMERGE === null) { annoG.style("opacity", 0); return; }
+    annoG.style("opacity", 1);
+    annoLine.attr("x1", x(EMERGE)).attr("x2", x(EMERGE));
+    annoText.attr("x", x(EMERGE) - 6).attr("text-anchor", "end").text(`${EMERGE}: the gap clearly emerges`);
+    annoText2.attr("x", x(EMERGE) - 6).attr("text-anchor", "end").text("11-yr average gap stays above +1 °C after this");
+  }
+
   const y = d3.scaleLinear().range([h, 0]);
   function rescaleY() {
     const ext = d3.extent(proj.flatMap(d => [d[col("ssp126_c")], d[col("ssp585_c")]]));
@@ -35,6 +66,7 @@
     const ln = k => d3.line().x(d => x(d.year)).y(d => y(d[col(k)]));
     pLow.datum(proj).attr("d", ln("ssp126_c"));
     pHigh.datum(proj).attr("d", ln("ssp585_c"));
+    drawAnnotation();
   }
 
   // Brush (snaps to whole years, minimum 5-year window)
@@ -87,6 +119,14 @@
     d3.select("#s-high").text(`${signed(m.high - base)} °C vs 1995–2014`);
     const neg = m.rows.filter(r => r[col("gap_c")] < 0).length;
     d3.select("#s-gap").text(neg ? `${neg} of ${m.n} single years had SSP1-2.6 warmer` : `SSP5-8.5 warmer in every year of the window`);
+    const place = state.region === "glob" ? "worldwide" : "in the California box";
+    let verdict;
+    const ratio = m.gap / NOISE;
+    if (ratio >= 0.8 && ratio <= 1.25) verdict = `That is about the same size as ordinary year-to-year swings (about ±${fmt1(NOISE)} °C)${neg ? `, and ${neg} single year${neg > 1 ? "s" : ""} ran the other way` : ""}, so the signal is only starting to show.`;
+    else if (m.gap < NOISE) verdict = `That is smaller than ordinary year-to-year swings (about ±${fmt1(NOISE)} °C), so the two futures are hard to tell apart in this window.`;
+    else if (neg > 0) verdict = `That is larger than ordinary year-to-year swings (about ±${fmt1(NOISE)} °C), though ${neg} single year${neg > 1 ? "s" : ""} still ran the other way.`;
+    else verdict = `SSP5-8.5 is warmer in every single year of the window, ${fmt1(m.gap / NOISE)}× the size of ordinary year-to-year swings.`;
+    d3.select("#summary").html(`In <b>${a}–${b}</b>, the high-emissions future averages <b>${fmt(m.high)} °C</b> ${place}: <b>${signed(m.gap)} °C</b> compared with the low-emissions future. ${verdict}`);
     el.dataset.window = `${a}-${b}`; el.dataset.gap = m.gap.toFixed(3);
     el.dataset.low = m.low.toFixed(3); el.dataset.high = m.high.toFixed(3); el.dataset.region = state.region;
     d3.selectAll("button[data-a]").attr("aria-pressed", function () { return +this.dataset.a === a && +this.dataset.b === b; });
@@ -99,7 +139,7 @@
   d3.selectAll("button[data-region]").on("click", function () {
     state.region = this.dataset.region;
     d3.selectAll("button[data-region]").attr("aria-pressed", function () { return this.dataset.region === state.region; });
-    d3.select("#region-note").text(state.region === "glob" ? "Global area-weighted mean (all grid cells)" : "California box land cells (32.5–42°N, 124.5–114°W)");
+    d3.select("#region-note").text(state.region === "glob" ? "all grid cells worldwide, weighted by cell area" : "California-box land grid cells (32.5–42°N, 124.5–114°W), weighted by cell area");
     rescaleY(); update(state.a, state.b);
   });
 
