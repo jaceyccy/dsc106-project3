@@ -129,3 +129,14 @@ button.chip:focus-visible { outline: 2px solid var(--low); outline-offset: 2px; 
   .readout { grid-template-columns: 1fr; }
   header h1 { font-size: 1.45rem; }
 }
+
+/* Final-version additions */
+header .intro { font-size: 0.95rem; margin: 0 0 8px; max-width: 760px; }
+.summary { font-size: 1rem; margin: 2px 0 10px; padding: 10px 12px; border-left: 3px solid var(--text-primary); background: var(--surface-0); border-radius: 4px; }
+.writeup h3 { font-size: 1rem; margin: 18px 0 4px; }
+.writeup ul { margin: 4px 0 8px; padding-left: 20px; }
+.writeup li, .writeup p { font-size: 0.92rem; margin: 4px 0; }
+.note-to-team { color: var(--high); }
+.brush .selection { pointer-events: none; } /* lets a new drag start anywhere, even inside the current window */
+code { overflow-wrap: anywhere; word-break: break-word; }
+.chart svg { user-select: none; -webkit-user-select: none; }
