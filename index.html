@@ -8,16 +8,18 @@
 </head>
 <body>
 <main>
-  <nav class="top"><a href="index.html">Interactive prototype</a><a href="exploration.html">Exploratory graphs</a></nav>
+  <nav class="top"><a href="#viz">Visualization</a><a href="#writeup">Write-up</a><a href="exploration.html">Exploratory graphs</a><a href="https://github.com/jaceyccy/dsc106-project3">Source code</a></nav>
   <header>
     <h1>Two Futures, One Planet: How Our Emissions Choices Shape 2100</h1>
     <p class="question">How does the projected temperature gap between a low-emissions and a high-emissions future change over the century?</p>
-    <p class="data-note">CMIP6 · CESM2-WACCM r1i1p1f1 · near-surface air temperature (<code>tas</code>), annual means in °C ·
-      SSP1-2.6 vs SSP5-8.5, 2015–2100 · <span id="region-note">California box land cells (32.5–42°N, 124.5–114°W)</span> · cos(latitude) area weights · baseline 1995–2014 (historical run).</p>
+    <p class="intro">One climate model, two futures. In <strong>SSP1-2.6</strong> the world cuts emissions sharply; in <strong>SSP5-8.5</strong> emissions keep rising. Pick a stretch of years to see how far apart the two futures are. Try <em>Near term</em>, then <em>End of century</em>.</p>
   </header>
 
-  <section class="card">
-    <h2>Pick a window, compare the futures <span class="status">(prototype, checkpoint build)</span></h2>
+  <section class="card" id="viz">
+    <h2>Pick a window, compare the futures</h2>
+    <p class="subtitle" id="chart-subtitle">Annual mean near-surface air temperature (°C), 2015–2100, from CMIP6 model CESM2-WACCM (run r1i1p1f1).
+      Monthly values averaged to calendar years and over <span id="region-note">California-box land grid cells (32.5–42°N, 124.5–114°W), weighted by cell area</span>.
+      Window values are the mean of the annual values inside the window.</p>
     <div class="controls">
       <div class="group"><span class="group-label">Window:</span>
         <button class="chip" data-a="2021" data-b="2040">Near term 2021–2040</button>
@@ -31,22 +33,61 @@
       </div>
     </div>
     <p class="window-label">Selected window: <span id="win-label">—</span></p>
+    <p class="summary" id="summary" aria-live="polite"></p>
     <div class="readout" aria-live="polite">
-      <div class="tile"><div class="k"><i class="dot" style="width:9px;height:9px;border-radius:50%;background:var(--low);display:inline-block"></i>SSP1-2.6 window mean</div><div class="v" id="v-low">—</div><div class="s" id="s-low"></div></div>
-      <div class="tile"><div class="k"><i class="dot" style="width:9px;height:9px;border-radius:50%;background:var(--high);display:inline-block"></i>SSP5-8.5 window mean</div><div class="v" id="v-high">—</div><div class="s" id="s-high"></div></div>
+      <div class="tile"><div class="k"><i class="dot" style="width:9px;height:9px;border-radius:50%;background:var(--low);display:inline-block"></i>SSP1-2.6 (low emissions) window mean</div><div class="v" id="v-low">—</div><div class="s" id="s-low"></div></div>
+      <div class="tile"><div class="k"><i class="dot" style="width:9px;height:9px;border-radius:50%;background:var(--high);display:inline-block"></i>SSP5-8.5 (high emissions) window mean</div><div class="v" id="v-high">—</div><div class="s" id="s-high"></div></div>
       <div class="tile"><div class="k">Gap (SSP5-8.5 − SSP1-2.6)</div><div class="v" id="v-gap">—</div><div class="s" id="s-gap"></div></div>
     </div>
-    <div class="legend"><span><i style="background:var(--low)"></i>SSP1-2.6 annual</span><span><i style="background:var(--high)"></i>SSP5-8.5 annual</span><span><i style="background:var(--text-primary)"></i>thick segments = window means; bracket = gap</span></div>
+    <div class="legend"><span><i style="background:var(--low)"></i>SSP1-2.6 annual</span><span><i style="background:var(--high)"></i>SSP5-8.5 annual</span><span><i style="background:var(--text-primary)"></i>thick segments = window means; bracket = gap</span><span><i style="background:var(--text-secondary)"></i>dashed line = year the gap clearly emerges</span></div>
     <div class="chart" id="proto"></div>
-    <p class="status">Drag across the chart to choose any window (snaps to whole years, minimum 5 years). Hover for single-year values.</p>
+    <p class="status">Drag across the chart to choose any window (it snaps to whole years, minimum 5 years). Hover for single-year values. "Change vs 1995–2014" is measured against the same model's historical run.</p>
   </section>
 
-  <section class="card">
-    <h2>Status at the checkpoint</h2>
-    <p class="finding"><strong>Working now:</strong> brush-to-select time window, preset windows, California/global toggle, readouts that update together (both scenario means, the gap, change vs 1995–2014), and hover details.</p>
-    <p class="finding"><strong>Planned for the final version:</strong> narrative annotations, a short write-up (design rationale and development process), visual polish and a mobile layout pass. Adding more CMIP6 models to show model spread is a stretch goal.</p>
+  <section class="card writeup" id="writeup">
+    <h2>Write-up</h2>
+    <p class="note-to-team"><strong>[TEAM: rewrite this section in your own words before submitting, and fill in the bracketed parts.]</strong></p>
+
+    <h3>Motivation</h3>
+    <p>Climate projections usually come as a single line per scenario, which hides two things: how long the two futures look alike, and how big the difference gets. We focus on the <em>gap</em> between a low- and a high-emissions future and let the reader decide which part of the century to look at.</p>
+
+    <h3>Data and transformations</h3>
+    <ul>
+      <li><strong>Source:</strong> CMIP6 on Google Cloud (Pangeo catalog), monthly near-surface air temperature (<code>tas</code>) from CESM2-WACCM, run r1i1p1f1, native grid (0.94° × 1.25°). The same run and grid are used for the historical, SSP1-2.6 and SSP5-8.5 experiments, so differences come from the scenario, not the model setup.</li>
+      <li><strong>Region:</strong> a bounding box around California (32.5–42°N, 124.5–114°W), keeping only grid cells that are at least 50% land (64 of 88 cells). The box also covers most of Nevada and small parts of Oregon, Arizona and Baja California. Cells are weighted by cos(latitude) because cells near the poles cover less area. A global area-weighted mean is offered for comparison.</li>
+      <li><strong>Time:</strong> monthly values are averaged to calendar years, weighted by days in each month, and converted from kelvin to °C. Window values are means of those annual values.</li>
+      <li><strong>Baseline:</strong> the "vs 1995–2014" numbers compare against the same model's historical run for 1995–2014, the reference period the IPCC uses.</li>
+      <li><strong>The "gap emerges" line:</strong> the first year after which the 11-year centered moving average of the gap never falls below +1 °C again (2057 for California, 2058 globally).</li>
+      <li><strong>Limitation:</strong> this is one run of one model. Year-to-year wiggles are partly random weather inside the model, and other models would give somewhat different numbers.</li>
+    </ul>
+
+    <h3>Design rationale</h3>
+    <ul>
+      <li><strong>Lines over time</strong> for the annual series, because position along a shared time axis is the most accurate way to compare two trends.</li>
+      <li><strong>Color:</strong> blue for low emissions and orange for high, used the same way on every chart. We checked the pair for color-vision deficiency, and every color is also named in a direct label or legend, so color is never the only cue.</li>
+      <li><strong>Window selection (brushing) as the main interaction:</strong> our exploratory graphs showed single years are noisy. The low-emissions run is warmer in 21 of 86 years, so a year slider would mislead. Averaging over a window the reader chooses shows the signal, and the presets give quick starting points.</li>
+      <li><strong>Linked readouts and summary sentence:</strong> both window means, the gap, and the change since 1995–2014 update together, and the sentence compares the gap with ordinary year-to-year swings. That makes the main pattern, a gap that is small early on and large late, easy to find.</li>
+      <li><strong>Annotation:</strong> the dashed "gap clearly emerges" line gives readers a landmark for when the two futures separate.</li>
+      <li><strong>Region toggle:</strong> lets readers check whether California's gap differs from the global one (it ends larger: +3.92 °C vs +3.28 °C in 2081–2100).</li>
+    </ul>
+
+    <h3>Alternatives we considered</h3>
+    <ul>
+      <li><strong>A map of California by grid cell:</strong> at about 1° resolution the state is only around 64 land cells, so a map adds little detail and makes comparing two futures over time harder.</li>
+      <li><strong>A single-year slider:</strong> rejected because single years are dominated by natural variability (see exploratory graphs 2 and 4).</li>
+      <li><strong>Two separate charts, one per scenario:</strong> rejected because comparing across charts is harder than comparing two lines on one axis.</li>
+      <li>[TEAM: add any other options you sketched or tried.]</li>
+    </ul>
+
+    <h3>Development process</h3>
+    <ul>
+      <li><strong>Who did what:</strong> [MEMBER 1: …], [MEMBER 2: …], [MEMBER 3: …], [MEMBER 4: …]</li>
+      <li><strong>Time spent:</strong> about [N] people-hours in total.</li>
+      <li><strong>What took the most time:</strong> [e.g., finding matching CMIP6 runs and checking units and year coverage; getting the brush and readouts to stay in sync]</li>
+    </ul>
+    <p>Exploratory analysis: <a href="exploration.html">five exploratory graphs</a>. Data pipeline: <code>notebooks/project3_cmip6_exploration.ipynb</code> in the <a href="https://github.com/jaceyccy/dsc106-project3">repository</a>.</p>
   </section>
-  <footer>D3.js v7 · data: <code>data/tas_scenarios_annual.csv</code> · see <a href="exploration.html">exploratory graphs</a>.</footer>
+  <footer>Built with D3.js v7 · data: <code>data/tas_scenarios_annual.csv</code> · DSC 106 Project 3.</footer>
 </main>
 <script src="lib/d3.v7.min.js"></script>
 <script src="js/common.js"></script>
