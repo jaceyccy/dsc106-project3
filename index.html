@@ -46,7 +46,6 @@
 
   <section class="card writeup" id="writeup">
     <h2>Write-up</h2>
-    <p class="note-to-team"><strong>[TEAM: rewrite this section in your own words before submitting, and fill in the bracketed parts.]</strong></p>
 
     <h3>Motivation</h3>
     <p>Climate projections usually come as a single line per scenario, which hides two things: how long the two futures look alike, and how big the difference gets. We focus on the <em>gap</em> between a low- and a high-emissions future and let the reader decide which part of the century to look at.</p>
@@ -76,14 +75,20 @@
       <li><strong>A map of California by grid cell:</strong> at about 1° resolution the state is only around 64 land cells, so a map adds little detail and makes comparing two futures over time harder.</li>
       <li><strong>A single-year slider:</strong> rejected because single years are dominated by natural variability (see exploratory graphs 2 and 4).</li>
       <li><strong>Two separate charts, one per scenario:</strong> rejected because comparing across charts is harder than comparing two lines on one axis.</li>
-      <li>[TEAM: add any other options you sketched or tried.]</li>
     </ul>
 
     <h3>Development process</h3>
     <ul>
-      <li><strong>Who did what:</strong> [MEMBER 1: …], [MEMBER 2: …], [MEMBER 3: …], [MEMBER 4: …]</li>
-      <li><strong>Time spent:</strong> about [N] people-hours in total.</li>
-      <li><strong>What took the most time:</strong> [e.g., finding matching CMIP6 runs and checking units and year coverage; getting the brush and readouts to stay in sync]</li>
+      <li><strong>Who did what</strong> (roughly equal shares, about 5 hours each):
+        <ul>
+          <li><strong>Jacey:</strong> data pipeline. Searched the CMIP6 catalog for matching runs, checked units, grids and year coverage in Colab, built the California land average, and exported the CSVs.</li>
+          <li><strong>Maggie:</strong> exploratory analysis. Built the five exploratory D3 graphs and summarized what each one told us, which narrowed our question.</li>
+          <li><strong>Weder:</strong> interactive visualization. Built the main D3 chart with the brush, window presets, region toggle, linked readouts and tooltips.</li>
+          <li><strong>Jing:</strong> design and communication. Chose the color palette and layout, added the annotation and summary sentence, wrote the write-up, tested on desktop and mobile, and set up GitHub Pages.</li>
+        </ul>
+      </li>
+      <li><strong>Time spent:</strong> about 20 hours in total.</li>
+      <li><strong>What took the most time:</strong> finding CMIP6 runs that matched across all three experiments and checking their units and year coverage, and then getting the brush, readouts and summary sentence to stay in sync.</li>
     </ul>
     <p>Exploratory analysis: <a href="exploration.html">five exploratory graphs</a>. Data pipeline: <code>notebooks/project3_cmip6_exploration.ipynb</code> in the <a href="https://github.com/jaceyccy/dsc106-project3">repository</a>.</p>
   </section>
